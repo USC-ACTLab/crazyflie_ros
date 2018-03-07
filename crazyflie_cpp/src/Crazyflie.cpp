@@ -866,17 +866,6 @@ void Crazyflie::land(
   handleRequests();
 }
 
-void Crazyflie::avoidTarget(
-  float x, float y, float z,
-  float maxDisplacement, float maxSpeed)
-{
-  crtpTrajectoryStartAvoidTargetRequest request(x, y, z, maxDisplacement, maxSpeed);
-
-  startBatchRequest();
-  addRequest(request, 2);
-  handleRequests();
-}
-
 void Crazyflie::setGroup(
   uint8_t group)
 {

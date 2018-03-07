@@ -1,4 +1,0 @@
-geometry_msgs/Point home # meters
-float32 max_displacement  # meters
-float32 max_speed         # meters/sec
----

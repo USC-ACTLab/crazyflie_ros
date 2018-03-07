@@ -232,10 +232,6 @@ public:
     float targetHeight,
     uint16_t time_in_ms);
 
-  void avoidTarget(
-    float x, float y, float z,
-    float max_displacement, float max_speed);
-
   void setGroup(
     uint8_t group);
 

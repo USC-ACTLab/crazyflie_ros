@@ -687,27 +687,6 @@ struct crtpTrajectoryStartCannedRequest
 } __attribute__((packed));
 CHECKSIZE(crtpTrajectoryStartCannedRequest)
 
-struct crtpTrajectoryStartAvoidTargetRequest
-{
-  crtpTrajectoryStartAvoidTargetRequest(
-    float x, float y, float z,
-    float maxDisplacement, float maxSpeed)
-    : header(14, 1)
-    , command(COMMAND_START_AVOID_TARGET)
-    {
-      data.x = x;
-      data.y = y;
-      data.z = z;
-      data.max_displacement = maxDisplacement;
-      data.max_speed = maxSpeed;
-    }
-
-    const crtp header;
-    const uint8_t command;
-    struct data_start_avoid_target data;
-} __attribute__((packed));
-CHECKSIZE(crtpTrajectoryStartAvoidTargetRequest)
-
 struct crtpTrajectorySetGroupRequest
 {
   crtpTrajectorySetGroupRequest(

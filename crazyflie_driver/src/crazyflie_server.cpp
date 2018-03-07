@@ -9,7 +9,6 @@
 #include "crazyflie_driver/UpdateParams.h"
 #include "crazyflie_driver/UploadTrajectory.h"
 #include "crazyflie_driver/StartCannedTrajectory.h"
-#include "crazyflie_driver/AvoidTarget.h"
 #undef major
 #undef minor
 #include "crazyflie_driver/SetEllipse.h"
@@ -185,7 +184,6 @@ public:
     , m_serviceTakeoff()
     , m_serviceLand()
     , m_serviceHover()
-    , m_serviceAvoidTarget()
     , m_serviceSetGroup()
     , m_logBlocks(log_blocks)
     , m_forceNoCache(force_no_cache)
@@ -197,7 +195,6 @@ public:
     m_serviceTakeoff = n.advertiseService(tf_prefix + "/takeoff", &CrazyflieROS::takeoff, this);
     m_serviceLand = n.advertiseService(tf_prefix + "/land", &CrazyflieROS::land, this);
     m_serviceHover = n.advertiseService(tf_prefix + "/hover", &CrazyflieROS::hover, this);
-    m_serviceAvoidTarget = n.advertiseService(tf_prefix + "/avoid_target", &CrazyflieROS::avoidTarget, this);
     m_serviceSetGroup = n.advertiseService(tf_prefix + "/set_group", &CrazyflieROS::setGroup, this);
 
     if (m_enableLogging) {
@@ -413,19 +410,6 @@ public:
     return true;
   }
 
-  bool avoidTarget(
-    crazyflie_driver::AvoidTarget::Request& req,
-    crazyflie_driver::AvoidTarget::Response& res)
-  {
-    ROS_INFO("[%s] Avoid Target", m_frame.c_str());
-
-    m_cf.avoidTarget(
-      req.home.x, req.home.y, req.home.z,
-      req.max_displacement, req.max_speed);
-
-    return true;
-  }
-
   bool setGroup(
     crazyflie_driver::SetGroup::Request& req,
     crazyflie_driver::SetGroup::Response& res)
@@ -582,7 +566,6 @@ private:
   ros::ServiceServer m_serviceTakeoff;
   ros::ServiceServer m_serviceLand;
   ros::ServiceServer m_serviceHover;
-  ros::ServiceServer m_serviceAvoidTarget;
   ros::ServiceServer m_serviceSetGroup;
 
   std::vector<crazyflie_driver::LogBlock> m_logBlocks;
@@ -1115,7 +1098,7 @@ private:
             ROS_WARN("No known type for %s.%s!", group.c_str(), param.c_str());
           }
           request.params.push_back(group + "/" + param);
-          
+
         }
       }
     }
@@ -1464,7 +1447,7 @@ public:
         if (logClouds) {
           pointCloudLogger.log(markers);
         }
-      } 
+      }
 
       if (useMotionCaptureObjectTracking || !interactiveObject.empty()) {
         // get mocap rigid bodies
