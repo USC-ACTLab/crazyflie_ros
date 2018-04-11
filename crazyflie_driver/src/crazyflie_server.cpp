@@ -1401,13 +1401,37 @@ public:
       for (const auto& item : mocapLatency) {
         viconLatency += item.value();
       }
-      if (viconLatency > 0.035) {
-        std::stringstream sstr;
-        sstr << "VICON Latency high: " << viconLatency << " s." << std::endl;
-        for (const auto& item : mocapLatency) {
-          sstr << "  Latency: " << item.name() << ": " << item.value() << " s." << std::endl;
-        }
-        ROS_WARN("%s", sstr.str().c_str());
+
+      if (motionCaptureType == "vicon") {
+          if (viconLatency > 0.035) {
+              std::stringstream sstr;
+              sstr << "VICON Latency high: " << viconLatency << " s." << std::endl;
+              for (const auto& item : mocapLatency) {
+                  sstr << "  Latency: " << item.name() << ": " << item.value() << " s." << std::endl;
+              }
+              ROS_WARN("%s", sstr.str().c_str());
+          }
+      }
+      else if (motionCaptureType == "optitrack") {
+          viconLatency = viconLatency/1000;
+          if (viconLatency > 0.035) {
+              std::stringstream sstr;
+              sstr << "OptiTrack Latency high: " << viconLatency << " s." << std::endl;
+              for (const auto& item : mocapLatency) {
+                  sstr << "  Latency: " << item.name() << ": " << item.value() << " s." << std::endl;
+              }
+              ROS_WARN("%s", sstr.str().c_str());
+          }
+      }
+      else {
+          if (viconLatency > 0.035) {
+              std::stringstream sstr;
+              sstr << "Motion Capture System Latency high: " << viconLatency << " s." << std::endl;
+              for (const auto& item : mocapLatency) {
+                  sstr << "  Latency: " << item.name() << ": " << item.value() << " s." << std::endl;
+              }
+              ROS_WARN("%s", sstr.str().c_str());
+          }
       }
 
       if (printLatency) {
