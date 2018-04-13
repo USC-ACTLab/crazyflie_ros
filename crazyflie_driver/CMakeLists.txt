@@ -9,8 +9,8 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   tf
   crazyflie_cpp
-  libobjecttracker
-  libmotioncapture
+  # libobjecttracker
+  # libmotioncapture
   tf_conversions
 )
 
@@ -22,7 +22,7 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
-find_package(PCL REQUIRED)
+# find_package(PCL REQUIRED)
 # find_package(libobjecttracker REQUIRED)
 # message(${libobjecttracker_PKGCONFIG_DIR})
 
@@ -96,45 +96,6 @@ catkin_package(
 
 include_directories(
   ${catkin_INCLUDE_DIRS}
-  ${PCL_INCLUDE_DIRS}
-  # ${libobjecttracker_INCLUDE_DIRS}
-  ../externalDependencies/libobjecttracker/include
-  ## YOU HAVE TO CHANGE THIS TO REACH THE CRAZYFLIE FIRMWARE ON YOUR MACHINE
-  ../../../../crazyflie-firmware/src/modules/interface/
-)
-
-link_directories(
-  ${LIBMOTIONCAPTURE_LINK_DIR}
-)
-
-if (ENABLE_VICON)
-  add_definitions(-DENABLE_VICON)
-endif()
-if (ENABLE_OPTITRACK)
-  add_definitions(-DENABLE_OPTITRACK)
-endif()
-if (ENABLE_PHASESPACE)
-  add_definitions(-DENABLE_PHASESPACE)
-endif()
-
-# message(${CMAKE_BINARY_DIR}/crazyflie_ros/externalDependencies/libobjecttracker)
-
-## Declare a cpp executable
-add_executable(crazyflie_server
-  src/crazyflie_server.cpp
-)
-
-## Add cmake target dependencies of the executable/library
-## as an example, message headers may need to be generated before nodes
-add_dependencies(crazyflie_server
-  crazyflie_driver_generate_messages_cpp
-)
-
-## Specify libraries to link a library or executable target against
-target_link_libraries(crazyflie_server
-  ${catkin_LIBRARIES}
-  # ${libobjecttracker_LIBRARIES}
-  # ${libobjecttracker_LIBRARIES}
 )
 
 ## Declare a cpp executable
@@ -152,14 +113,6 @@ target_link_libraries(crazyflie_add
   ${catkin_LIBRARIES}
 )
 
-## Declare a cpp executable
-add_executable(mocap_helper
-  src/mocap_helper.cpp
-)
-
-target_link_libraries(mocap_helper
-  ${catkin_LIBRARIES}
-)
 
 #############
 ## Install ##
